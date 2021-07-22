@@ -1,16 +1,20 @@
 #include<rpmPID.h>
-motor m1(2, 15 , 27, 12, 14, 4600, -1); //(en1,en2,d1,d2,pwm,cpr)9211,660
-RPM rpm(&m1);
+Motor m1(22,21);
+RPM rpm(&m1,140);
 void setup() {
   Serial.begin(115200);
+  m1.setEncoder(26,27,-1);
+  
   Serial.setTimeout(5);
-  rpm.setAggTunings(2, 2, 0);
-  rpm.setSoftTunings(1, 1, 0);
-  rpm.setThreshold(500);
+  rpm.setThreshold(30);
+  rpm.setAggTunings(0.3, 0.5, 0);
+  rpm.setSoftTunings(0.05, 0.1, 0);
+//  m1.setPWM(200);
 }
 void loop() {
-  if (Serial.available()) {
+  if (Serial.available()) {    
     rpm.setRPM(Serial.parseInt());
   }
   rpm.compute();
+
 }
